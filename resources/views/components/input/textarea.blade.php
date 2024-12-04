@@ -1,0 +1,1 @@
+<textarea {{ $attributes->merge(['class' => "p-2 rounded-md border border-rp-neutral-500 focus:ring-1 focus:border-rp-neutral-500 appearance-none outline-none text-base"])}}></textarea>

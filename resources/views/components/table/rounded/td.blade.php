@@ -1,0 +1,1 @@
+<td {{ $attributes->merge(['class' => "first:rounded-l-lg last:rounded-r-lg first:pl-6 pr-3 pl-3 last:pr-6 py-6 text-left align-top "]) }}>{{ $slot }}</td>

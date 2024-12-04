@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    <IfModule mod_headers.c>
+        Header set X-Frame-Options "SAMEORIGIN"
+        Header set Referrer-Policy "same-origin"
+        Header set X-XSS-Protection "1; mode=block"
+        Header set X-Content-Type-Options nosniff
+        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        Header always set Permissions-Policy "autoplay=(self), camera=(), encrypted-media=(self), fullscreen=(), geolocation=(self), gyroscope=(self), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=(self), usb=()"
+
+        <If "%{THE_REQUEST} !~ m#\s/+(user|merchant|admin|sys-admin)[/?\s]#">
+            Header set Content-Security-Policy "script-src 'self' 'unsafe-eval' 'nonce-%{CSP_NONCE}e' https://www.google.com/recaptcha/; \
+                style-src 'self' 'nonce-%{CSP_NONCE}e'; \
+                frame-ancestors 'self'; \
+                form-action 'self'; \
+                img-src 'self'; \
+                connect-src 'self'; \
+                frame-src 'self' https://www.google.com/; \
+                font-src 'self' data:; \
+                media-src 'self'; \
+                object-src 'self'; \
+                manifest-src 'self'; \
+                worker-src 'self';"
+        </If>
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+

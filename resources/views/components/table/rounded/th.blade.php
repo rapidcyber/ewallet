@@ -1,0 +1,1 @@
+<th {{ $attributes->merge(['class' => "first:pl-8 last:pr-6 py-4 pr-3 pl-3 text-left font-bold text-rp-neutral-700 first:rounded-l-xl last:rounded-r-xl"]) }}>{{ $slot }}</th>
